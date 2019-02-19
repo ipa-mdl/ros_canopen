@@ -206,22 +206,7 @@ public:
     bool prepare();
 
     using StateFunc = std::function<void(const State&)>;
-    class StateDelegate :
-      public StateFunc
-    {
-      public:
-        template <class Instance, class Callable>
-        StateDelegate(Instance i, Callable callable) :
-          StateFunc(std::bind(callable, i, std::placeholders::_1))
-        {
-        }
-
-        template <class Callable>
-        StateDelegate(Callable callable) :
-          StateFunc(callable)
-        {
-        }
-    };
+    using StateDelegate = can::DelegateHelper<StateFunc>;
 
     typedef can::Listener<const StateFunc, const State&> StateListener;
     typedef StateListener::ListenerConstSharedPtr StateListenerConstSharedPtr;

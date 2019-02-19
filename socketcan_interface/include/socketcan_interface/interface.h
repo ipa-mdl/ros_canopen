@@ -7,6 +7,8 @@
 
 #include <boost/system/error_code.hpp>
 
+#include "socketcan_interface/helpers.h"
+
 namespace can{
 
 /** Header for CAN id an meta data*/
@@ -106,22 +108,7 @@ public:
 class StateInterface{
 public:
     using StateFunc = std::function<void(const State&)>;
-    class StateDelegate :
-      public StateFunc
-    {
-      public:
-        template <class Instance, class Callable>
-        StateDelegate(Instance i, Callable callable) :
-          StateFunc(std::bind(callable, i, std::placeholders::_1))
-        {
-        }
-
-        template <class Callable>
-        StateDelegate(Callable callable) :
-          StateFunc(callable)
-        {
-        }
-    };
+    using StateDelegate = DelegateHelper<StateFunc>;
     typedef Listener<const StateFunc, const State&> StateListener;
     typedef StateListener::ListenerConstSharedPtr StateListenerConstSharedPtr;
 
@@ -144,23 +131,7 @@ typedef StateInterface::StateListenerConstSharedPtr StateListenerConstSharedPtr;
 class CommInterface{
 public:
     using FrameFunc = std::function<void(const Frame&)>;
-    class FrameDelegate :
-      public FrameFunc
-    {
-      public:
-        template <class Instance, class Callable>
-        FrameDelegate(Instance i, Callable callable) :
-          FrameFunc(std::bind(callable, i, std::placeholders::_1))
-        {
-        }
-
-        template <class Callable>
-        FrameDelegate(Callable callable) :
-          FrameFunc(callable)
-        {
-        }
-    };
-
+    using FrameDelegate = DelegateHelper<FrameFunc>;
     typedef Listener<const FrameFunc, const Frame&> FrameListener;
     typedef FrameListener::ListenerConstSharedPtr FrameListenerConstSharedPtr;
 
