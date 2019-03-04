@@ -7,7 +7,7 @@
 
 #include <boost/system/error_code.hpp>
 
-#include "socketcan_interface/helpers.h"
+#include "socketcan_interface/delegates.h"
 
 namespace can{
 

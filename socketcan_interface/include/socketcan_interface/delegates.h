@@ -1,5 +1,5 @@
-#ifndef H_HELPERS
-#define H_HELPERS
+#ifndef SOCKETCAN_INTERFACE_DELEGATES_H_
+#define SOCKETCAN_INTERFACE_DELEGATES_H_
 
 #include <functional>
 
@@ -21,4 +21,4 @@ public:
 
 }  // namespace can
 
-#endif  // H_HELPERS
+#endif  // SOCKETCAN_INTERFACE_DELEGATES_H_

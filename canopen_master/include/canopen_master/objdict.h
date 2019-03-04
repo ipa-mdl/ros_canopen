@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <socketcan_interface/helpers.h>
+#include <socketcan_interface/delegates.h>
 
 #include <boost/thread/mutex.hpp>
 #include <functional>

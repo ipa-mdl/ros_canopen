@@ -8,7 +8,7 @@
 #include <boost/thread/thread.hpp>
 #include <boost/asio/high_resolution_timer.hpp>
 
-#include <socketcan_interface/helpers.h>
+#include <socketcan_interface/delegates.h>
 
 namespace canopen{
 
