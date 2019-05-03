@@ -108,7 +108,7 @@ public:
 class StateInterface{
 public:
     using StateFunc = std::function<void(const State&)>;
-    using StateDelegate = DelegateHelper<StateFunc>;
+    using StateDelegate [[deprecated("use StateFunc instead")]] = DelegateHelper<StateFunc>;
     using StateListener = Listener<const StateFunc, const State&>;
     using StateListenerConstSharedPtr = StateListener::ListenerConstSharedPtr;
 
@@ -131,7 +131,7 @@ using StateListenerConstSharedPtr = StateInterface::StateListenerConstSharedPtr;
 class CommInterface{
 public:
     using FrameFunc = std::function<void(const Frame&)>;
-    using FrameDelegate = DelegateHelper<FrameFunc>;
+    using FrameDelegate [[deprecated("use FrameFunc instead")]] = DelegateHelper<FrameFunc>;
     using FrameListener = Listener<const FrameFunc, const Frame&>;
     using FrameListenerConstSharedPtr = FrameListener::ListenerConstSharedPtr;
 

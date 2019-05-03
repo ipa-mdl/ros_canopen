@@ -206,7 +206,7 @@ public:
     bool prepare();
 
     using StateFunc = std::function<void(const State&)>;
-    using StateDelegate = can::DelegateHelper<StateFunc>;
+    using StateDelegate [[deprecated("use StateFunc instead")]] = can::DelegateHelper<StateFunc>;
 
     typedef can::Listener<const StateFunc, const State&> StateListener;
     typedef StateListener::ListenerConstSharedPtr StateListenerConstSharedPtr;

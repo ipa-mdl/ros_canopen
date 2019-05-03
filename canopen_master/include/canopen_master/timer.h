@@ -15,13 +15,13 @@ namespace canopen{
 class Timer{
 public:
     using TimerFunc = std::function<bool(void)>;
-    using TimerDelegate = can::DelegateHelper<TimerFunc>;
+    using TimerDelegate [[deprecated("use TimerFunc instead")]] = can::DelegateHelper<TimerFunc>;
 
     Timer():work(io), timer(io),thread(std::bind(
         static_cast<size_t(boost::asio::io_service::*)(void)>(&boost::asio::io_service::run), &io))
     {
     }
-    
+
     void stop(){
         boost::mutex::scoped_lock lock(mutex);
         timer.cancel();
@@ -48,7 +48,7 @@ public:
         io.stop();
         thread.join();
     }
-    
+
 private:
     boost::asio::io_service io;
     boost::asio::io_service::work work;
@@ -56,7 +56,7 @@ private:
     boost::chrono::high_resolution_clock::duration period;
     boost::mutex mutex;
     boost::thread thread;
-    
+
     TimerFunc delegate;
     void handler(const boost::system::error_code& ec){
         if(!ec){
@@ -65,11 +65,11 @@ private:
                 timer.expires_at(timer.expires_at() + period);
                 timer.async_wait(std::bind(&Timer::handler, this, std::placeholders::_1));
             }
-            
+
         }
     }
 };
-    
+
 }
 
 #endif
