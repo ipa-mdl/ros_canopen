@@ -1,6 +1,6 @@
 language: generic
 services:
-  - docker 
+  - docker
 
 cache:
   directories:
@@ -9,6 +9,7 @@ cache:
 env:
   global:
     - CCACHE_DIR=$HOME/.ccache
+    - DOCKER_BUILD_OPTS='--network=host' DOCKER_RUN_OPTS='--network=host'
 
   matrix:
     - ROS_DISTRO="kinetic" ROS_REPO=ros-shadow-fixed
@@ -23,5 +24,5 @@ matrix:
 
 install:
   - git clone --depth=1 https://github.com/ros-industrial/industrial_ci.git .ci_config
-script: 
+script:
   - .ci_config/travis.sh
