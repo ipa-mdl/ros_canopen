@@ -2,6 +2,18 @@
 Changelog for package canopen_master
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.10 (2019-03-18)
+-------------------
+* require minimum version of class_loader and pluginlib
+* Contributors: Mathias Lüdtke
+
+0.7.9 (2018-05-23)
+------------------
+* provided KeyHash
+  for use with unordered containers
+* added c_array access functons to can::Frame
+* Contributors: Mathias Lüdtke
+
 0.7.8 (2018-05-04)
 ------------------
 * Revert "pull make_shared into namespaces"

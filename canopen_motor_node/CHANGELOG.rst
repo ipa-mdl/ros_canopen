@@ -2,6 +2,14 @@
 Changelog for package canopen_motor_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.10 (2019-03-18)
+-------------------
+
+0.7.9 (2018-05-23)
+------------------
+* introduced HandleLayerSharedPtr
+* Contributors: Mathias Lüdtke
+
 0.7.8 (2018-05-04)
 ------------------
 

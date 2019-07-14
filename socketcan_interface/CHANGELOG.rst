@@ -2,6 +2,17 @@
 Changelog for package socketcan_interface
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.10 (2019-03-18)
+-------------------
+* require minimum version of class_loader and pluginlib
+* Contributors: Mathias Lüdtke
+
+0.7.9 (2018-05-23)
+------------------
+* introduced ROSCANOPEN_MAKE_SHARED
+* added c_array access functons to can::Frame
+* Contributors: Mathias Lüdtke
+
 0.7.8 (2018-05-04)
 ------------------
 * Revert "pull make_shared into namespaces"

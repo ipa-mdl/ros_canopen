@@ -22,7 +22,7 @@ class LimitsHandleBase {
 public:
     virtual void enforce(const ros::Duration &period) = 0;
     virtual void reset() = 0;
-    virtual ~LimitsHandleBase();
+    virtual ~LimitsHandleBase() {}
     typedef boost::shared_ptr<LimitsHandleBase> Ptr ROS_DEPRECATED;
 };
 typedef boost::shared_ptr<LimitsHandleBase> LimitsHandleBaseSharedPtr;
@@ -160,6 +160,8 @@ private:
     virtual void handleRecover(canopen::LayerStatus &status) { /* nothing to do */ }
 
 };
+
+typedef boost::shared_ptr<HandleLayer> HandleLayerSharedPtr;
 
 }  // namespace canopen
 
