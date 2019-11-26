@@ -2,15 +2,23 @@ name: CI
 
 on: [push]
 
-jobs:
-  build:
-
+.industrial_ci_job: &industrial_ci_job
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: get industrial_ci
       run: git clone --quiet --depth=1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
     - name: melodic
-      run: .industrial_ci/ci.sh TARGET_REPO_NAME=${GITHUB_REPOSITORY##*/} TARGET_REPO_PATH=${GITHUB_WORKSPACE} ROS_DISTRO=melodic
+      run: .industrial_ci/ci.sh TARGET_REPO_NAME=${GITHUB_REPOSITORY##*/} TARGET_REPO_PATH=${GITHUB_WORKSPACE}
+
+jobs:
+  melodic:
+    <<: *industrial_ci_job
+    env:
+      ROS_DISTRO: melodic
+  melodic-main:
+    <<: *industrial_ci_job
+    env:
+      ROS_DISTRO: melodic
+      ROS_REPO: main
         
