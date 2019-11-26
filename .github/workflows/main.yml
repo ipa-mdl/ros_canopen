@@ -1,0 +1,16 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: get industrial_ci
+      run: git clone --quiet --depth=1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
+    - name: melodic
+      run: /ici/ci.sh TARGET_REPO_NAME=${GITHUB_REPOSITORY##*/} TARGET_REPO_PATH=${GITHUB_WORKSPACE}
+        
