@@ -6,6 +6,7 @@ env:
   matrix:
     - ROS_DISTRO="melodic"   PRERELEASE=true
     - ROS_DISTRO="melodic"   PRERELEASE=true OS_NAME=debian OS_CODE_NAME=stretch
+    - ROS_DISTRO="noetic"    PRERELEASE=true
 install:
   - git clone --quiet --depth=1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
 script:
