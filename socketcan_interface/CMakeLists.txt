@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(socketcan_interface)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -146,6 +146,7 @@ if(CATKIN_ENABLE_TESTING)
   target_link_libraries(${PROJECT_NAME}-test_dispatcher
     ${PROJECT_NAME}_string
     ${catkin_LIBRARIES}
+    ${Boost_LIBRARIES}
   )
   target_compile_options(${PROJECT_NAME}-test_dispatcher PRIVATE -Wno-deprecated-declarations)
 endif()
