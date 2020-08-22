@@ -4,7 +4,7 @@ services:
 
 env:
   matrix:
-    - ROS_DISTRO="melodic"   PRERELEASE=true
+    - ROS_DISTRO="melodic"   PRERELEASE=true PRERELEASE_DOWNSTREAM_DEPTH=1
     - ROS_DISTRO="melodic"   PRERELEASE=true OS_NAME=debian OS_CODE_NAME=stretch
     - ROS_DISTRO="noetic"    PRERELEASE=true
 install:
