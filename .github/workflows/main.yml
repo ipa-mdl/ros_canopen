@@ -16,7 +16,7 @@ jobs:
         env: ${{matrix.env}}
   industrial_ci_step:
     env:
-      AFTER_INSTALL_TARGET_DEPENCIES: ici_exit
+      AFTER_INSTALL_TARGET_DEPENDENCIES: ici_exit
     strategy:
       matrix:
         env:
