@@ -1,6 +1,7 @@
 // Bring in my package's API, which is what I'm testing
 #include <socketcan_interface/dispatcher.h>
 #include <socketcan_interface/dummy.h>
+#include <socketcan_interface/threading.h>
 
 // Bring in gtest
 #include <gtest/gtest.h>
@@ -8,10 +9,10 @@
 class DummyInterfaceTest : public ::testing::Test{
 public:
     std::list<std::string> responses;
-    can::DummyInterface dummy;
-    DummyInterfaceTest() : dummy(true), listener(dummy.createMsgListenerM(this, &DummyInterfaceTest::handle)) { }
+    can::ThreadedDummyInterfaceSharedPtr dummy;
+    DummyInterfaceTest() : dummy(std::make_shared<can::ThreadedDummyInterface>()), listener(dummy->createMsgListenerM(this, &DummyInterfaceTest::handle)) {}
 
-   void handle(const can::Frame &f){
+    void handle(const can::Frame &f){
         responses.push_back(can::tostring(f, true));
     }
     can::FrameListenerConstSharedPtr listener;
@@ -20,11 +21,14 @@ public:
 // Declare a test
 TEST_F(DummyInterfaceTest, testCase1)
 {
-    dummy.add("0#8200", "701#00" ,false);
+    dummy->add("0#8200", "701#00", false);
+    dummy->init("unused", true, can::NoSettings::create());
 
     std::list<std::string> expected;
 
-    dummy.send(can::toframe("0#8200"));
+    dummy->send(can::toframe("0#8200"));
+    dummy->flush();
+   
     expected.push_back("0#8200");
     expected.push_back("701#00");
 

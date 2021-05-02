@@ -30,6 +30,7 @@
 #include <can_msgs/Frame.h>
 #include <socketcan_interface/socketcan.h>
 #include <socketcan_interface/dummy.h>
+#include <socketcan_interface/threading.h>
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
@@ -54,14 +55,14 @@ TEST(TopicToSocketCANTest, checkCorrectData)
   ros::NodeHandle nh(""), nh_param("~");
 
   // create the dummy interface
-  can::DummyInterfaceSharedPtr driver_ = std::make_shared<can::DummyInterface>(true);
+  can::ThreadedDummyInterfaceSharedPtr dummy = std::make_shared<can::ThreadedDummyInterface>();
 
   // start the to topic bridge.
-  socketcan_bridge::TopicToSocketCAN to_socketcan_bridge(&nh, &nh_param, driver_);
+  socketcan_bridge::TopicToSocketCAN to_socketcan_bridge(&nh, &nh_param, dummy);
   to_socketcan_bridge.setup();
 
   // init the driver to test stateListener (not checked automatically).
-  driver_->init("string_not_used", true);
+  dummy->init("string_not_used", true, can::NoSettings::create());
 
   // register for messages on received_messages.
   ros::Publisher publisher_ = nh.advertise<can_msgs::Frame>("sent_messages", 10);
@@ -70,7 +71,7 @@ TEST(TopicToSocketCANTest, checkCorrectData)
   frameCollector frame_collector_;
 
   //  driver->createMsgListener(&frameCallback);
-  can::FrameListenerConstSharedPtr frame_listener_ = driver_->createMsgListener(
+  can::FrameListenerConstSharedPtr frame_listener_ = dummy->createMsgListener(
 
             std::bind(&frameCollector::frameCallback, &frame_collector_, std::placeholders::_1));
 
@@ -96,6 +97,8 @@ TEST(TopicToSocketCANTest, checkCorrectData)
   ros::WallDuration(1.0).sleep();
   ros::spinOnce();
 
+  dummy->flush();
+
   can_msgs::Frame received;
   can::Frame f = frame_collector_.frames.back();
   socketcan_bridge::convertSocketCANToMessage(f, received);
@@ -119,11 +122,13 @@ TEST(TopicToSocketCANTest, checkInvalidFrameHandling)
   ros::NodeHandle nh(""), nh_param("~");
 
   // create the dummy interface
-  can::DummyInterfaceSharedPtr driver_ = std::make_shared<can::DummyInterface>(true);
+  can::ThreadedDummyInterfaceSharedPtr dummy = std::make_shared<can::ThreadedDummyInterface>();
 
   // start the to topic bridge.
-  socketcan_bridge::TopicToSocketCAN to_socketcan_bridge(&nh, &nh_param, driver_);
+  socketcan_bridge::TopicToSocketCAN to_socketcan_bridge(&nh, &nh_param, dummy);
   to_socketcan_bridge.setup();
+
+  dummy->init("string_not_used", true, can::NoSettings::create());
 
   // register for messages on received_messages.
   ros::Publisher publisher_ = nh.advertise<can_msgs::Frame>("sent_messages", 10);
@@ -132,7 +137,7 @@ TEST(TopicToSocketCANTest, checkInvalidFrameHandling)
   frameCollector frame_collector_;
 
   //  add callback to the dummy interface.
-  can::FrameListenerConstSharedPtr frame_listener_ = driver_->createMsgListener(
+  can::FrameListenerConstSharedPtr frame_listener_ = dummy->createMsgListener(
           std::bind(&frameCollector::frameCallback, &frame_collector_, std::placeholders::_1));
 
   // create a message
@@ -148,6 +153,8 @@ TEST(TopicToSocketCANTest, checkInvalidFrameHandling)
   // give some time for the interface some time to process the message
   ros::WallDuration(1.0).sleep();
   ros::spinOnce();
+  dummy->flush();
+
   EXPECT_EQ(frame_collector_.frames.size(), 0);
 
   msg.is_extended = true;
@@ -156,6 +163,8 @@ TEST(TopicToSocketCANTest, checkInvalidFrameHandling)
   publisher_.publish(msg);
   ros::WallDuration(1.0).sleep();
   ros::spinOnce();
+  dummy->flush();
+
   EXPECT_EQ(frame_collector_.frames.size(), 1);
 
   // wipe the frame queue.
@@ -167,6 +176,8 @@ TEST(TopicToSocketCANTest, checkInvalidFrameHandling)
   publisher_.publish(msg);
   ros::WallDuration(1.0).sleep();
   ros::spinOnce();
+  dummy->flush();
+
   EXPECT_EQ(frame_collector_.frames.size(), 0);
 }
 

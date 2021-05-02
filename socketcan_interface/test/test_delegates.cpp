@@ -1,6 +1,7 @@
 // Bring in my package's API, which is what I'm testing
 #include <socketcan_interface/delegates.h>
 #include <socketcan_interface/dummy.h>
+#include <socketcan_interface/threading.h>
 #include <boost/bind.hpp>
 
 // Bring in gtest
@@ -33,7 +34,8 @@ void fill_any(Receiver &r, const can::Frame &f){
 TEST(DelegatesTest, testFrameDelegate)
 {
 
-    can::DummyInterface dummy(true);
+    can::ThreadedDummyInterface dummy;
+    dummy.init("unused", true, can::NoSettings::create());
     Receiver r1, r3, r4, r5;
     boost::shared_ptr<Receiver> r6(new Receiver());
     std::shared_ptr<Receiver> r7(new Receiver());
@@ -48,6 +50,7 @@ TEST(DelegatesTest, testFrameDelegate)
 
     std::list<std::string> expected;
     dummy.send(can::toframe("0#8200"));
+    dummy.flush();
     expected.push_back("0#8200");
 
     EXPECT_EQ(expected, r1.responses);
