@@ -13,7 +13,7 @@ jobs:
       ROS_DISTRO: ${{ matrix.distro }}
       PRERELEASE: true
       BASEDIR: ${{ github.workspace }}/.base
-      CCACHE_DIR: ${{ github.workspace }}/.base/.ccache
+      CCACHE_DIR: ${{ github.workspace }}/.base/.sub/.ccache
       CACHE_PREFIX: ${{ matrix.distro}}
     name: "${{ matrix.distro }}"
     runs-on: ubuntu-latest
