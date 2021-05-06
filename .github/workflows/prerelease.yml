@@ -12,6 +12,7 @@ jobs:
       BUILDER: catkin_make_isolated
       ROS_DISTRO: ${{ matrix.distro }}
       PRERELEASE: true
+      BASEDIR: ${{ github.workspace }}/.base
       CCACHE_DIR: ${{ github.workspace }}/.base/.ccache
       CACHE_PREFIX: ${{ matrix.distro}}
     name: "${{ matrix.distro }}"
